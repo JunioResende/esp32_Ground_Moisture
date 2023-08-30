@@ -36,8 +36,14 @@ void setup() {
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     int sensorValue = analogRead(sensorPin);
     int percent = map(sensorValue, dryReading, wetReading, dryPercent, wetPertcent);
-    String message = "Umidade do solo: " + String(percent) + "%";
-    request->send(200, "text/plain", message);
+    
+    StaticJsonDocument<200> jsonDoc;
+    jsonDoc["Umidade do Solo: "] = percent;
+
+    String JsonString;
+    serializeJson(jsonDoc, JsonString);
+
+    request->send(200, "application/json", JsonString);
   });
 
   server.begin();
