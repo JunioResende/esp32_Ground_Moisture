@@ -33,17 +33,11 @@ void setup() {
   Serial.println(WiFi.localIP());
   delay(2000);
   
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+ server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     int sensorValue = analogRead(sensorPin);
     int percent = map(sensorValue, dryReading, wetReading, dryPercent, wetPertcent);
-    
-    StaticJsonDocument<200> jsonDoc;
-    jsonDoc["Umidade do Solo: "] = percent;
-
-    String JsonString;
-    serializeJson(jsonDoc, JsonString);
-
-    request->send(200, "application/json", JsonString);
+    String message = String(percent);
+    request->send(200, "text/plain", message);
   });
 
   server.begin();
