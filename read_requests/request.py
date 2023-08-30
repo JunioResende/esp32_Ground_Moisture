@@ -2,7 +2,7 @@ import requests
 from time import sleep
 import sqlite3
 from time import sleep
-import csv
+import pandas as pd
 
 ip_address = '192.168.0.133'
 
